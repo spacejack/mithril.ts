@@ -12,10 +12,8 @@ function Router ($window: Window) {
 	const supportsPushState = typeof $window.history.pushState === "function"
 	const callAsync = typeof setImmediate === "function" ? setImmediate : setTimeout
 
-	//$window.location.
-
-	function normalize (fragment: string): string {
-		let data: string = ($window.location as any)[fragment].replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponent)
+	function normalize (fragment: "hash" | "search" | "pathname"): string {
+		let data: string = $window.location[fragment].replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponent)
 		if (fragment === "pathname" && data[0] !== "/") {
 			data = "/" + data
 		}
