@@ -993,7 +993,7 @@ export = function render ($window: Window) {
 	// 4. The event name is remapped to the handler before calling it.
 	// 5. In function-based event handlers, `ev.target === this`. We replicate
 	//    that below.
-	/* function EventDict() {}
+	function EventDict() {}
 	EventDict.prototype = Object.create(null)
 	EventDict.prototype.handleEvent = function (this: any, ev: Event) {
 		const handler = this["on" + ev.type]
@@ -1004,20 +1004,6 @@ export = function render ($window: Window) {
 		}
 		if (typeof onevent === "function") {
 			onevent.call(ev.target, ev)
-		}
-	} */
-
-	class EventDict {
-		handleEvent (ev: Event) {
-			const handler = (this as any)["on" + ev.type]
-			if (typeof handler === "function") {
-				handler.call(ev.target, ev)
-			} else if (typeof handler.handleEvent === "function") {
-				handler.handleEvent(ev)
-			}
-			if (typeof onevent === "function") {
-				onevent.call(ev.target, ev)
-			}
 		}
 	}
 
@@ -1039,7 +1025,7 @@ export = function render ($window: Window) {
 				vnode.events[key] = undefined
 			}
 		} else if (value != null && (typeof value === "function" || typeof value === "object")) {
-			vnode.events = new EventDict()
+			vnode.events = new (EventDict as any)()
 			vnode.dom!.addEventListener(key.slice(2), vnode.events, false)
 			vnode.events[key] = value
 		}
