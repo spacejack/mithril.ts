@@ -47,6 +47,7 @@
     "prefer-object-spread": false,
     "prefer-template": false,
     "prefer-type-cast": false,
+    "promise-must-complete": false,
     "quotemark": false,
     "semicolon": [true, "never"],
     "type-literal-delimiter": false,

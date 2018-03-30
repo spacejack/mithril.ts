@@ -98,7 +98,7 @@ function execSelector (state: any, attrs: Record<string, any>, children: any[]):
 
 function hyperscript (selector: any): Vnode {
 	// Because sloppy mode sucks
-	let attrs: Record<string, any> = arguments[1]
+	let attrs: Record<string, any> | undefined = arguments[1]
 	let start = 2
 	let children: any[]
 	let cached: any

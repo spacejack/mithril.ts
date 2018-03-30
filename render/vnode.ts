@@ -13,8 +13,12 @@ interface Vnode {
 }
 
 function Vnode(
-	tag: any, key: number | string | undefined, attrs: Record<string, any> | undefined,
-	children: any, text: string | undefined, dom: Node | null
+	tag: any,
+	key: number | string | undefined,
+	attrs: Record<string, any> | undefined,
+	children: Vnode[] | string | undefined,
+	text: string | undefined,
+	dom: Node | null
 ): Vnode {
 	return {
 		tag, key, attrs, children, text, dom,
