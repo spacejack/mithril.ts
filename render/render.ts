@@ -16,8 +16,8 @@ export = function render ($window: Window) {
 		math: "http://www.w3.org/1998/Math/MathML"
 	}
 
-	let onevent: () => void
-	function setEventCallback (callback: () => void) {
+	let onevent: (e: Event & {redraw?: false}) => void
+	function setEventCallback (callback: (e: Event & {redraw?: false}) => void) {
 		return onevent = callback
 	}
 

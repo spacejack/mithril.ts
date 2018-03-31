@@ -4,7 +4,7 @@ import parseQueryString = require("../querystring/parse")
 interface Router {
 	prefix: string
 	getPath(): string
-	setPath(path: string, data?: Record<string, any>, options?: Record<string, any>): void
+	setPath(path: string, data?: Record<string, any> | null, options?: Record<string, any>): void
 	defineRoutes(routes: Record<string, any>, resolve: (...args: any[]) => void, reject: (...args: any[]) => void): void
 }
 

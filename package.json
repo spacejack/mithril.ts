@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "node bundler/cli browser.js -output mithril.js -watch",
     "compile": "tsc",
+    "clean": "rm -f hyperscript.js index.js mount.js redraw.js render.js request.js route.js *.d.ts api/*.js api/*.d.ts promise/promise.js promise/*.d.ts render/*.js render/*.d.ts request/*.js request/*.d.ts router/*.js router/*.d.ts util/*.js util/*.d.ts",
     "build": "npm run compile && npm run build-browser && npm run build-min",
     "build-browser": "node bundler/cli browser.js -output mithril.js",
     "build-min": "node bundler/cli browser.js -output mithril.min.js -minify",
