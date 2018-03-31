@@ -1,5 +1,7 @@
+import Component = require("./component")
+
 interface Vnode {
-	tag: any
+	tag: string | ((vnode: Vnode) => Component) | Component
 	key: string | number | undefined
 	attrs: Record<string, any> | undefined
 	state: any

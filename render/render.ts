@@ -1,3 +1,4 @@
+import Component = require("./component")
 import Vnode = require("./vnode")
 
 type Hook = () => void
@@ -20,8 +21,8 @@ export = function render ($window: Window) {
 		return onevent = callback
 	}
 
-	function getNameSpace (vnode: Vnode): string {
-		return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag]
+	function getNameSpace (vnode: Vnode): string | undefined {
+		return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag as string]
 	}
 
 	//sanity check to discourage people from doing `vnode.state = ...`
@@ -143,8 +144,8 @@ export = function render ($window: Window) {
 
 		const element: Element = ns ?
 			// Note: TS signature for createElementNS is wrong?
-			is ? ($doc.createElementNS as any)(ns, tag, {is: is}) : $doc.createElementNS(ns, tag) :
-			is ? $doc.createElement(tag, {is: is}) : $doc.createElement(tag)
+			is ? ($doc.createElementNS as any)(ns, tag, {is: is}) : $doc.createElementNS(ns, tag as string) :
+			is ? $doc.createElement(tag as string, {is: is}) : $doc.createElement(tag as string)
 		vnode.dom = element
 
 		if (attrs != null) {
@@ -174,8 +175,8 @@ export = function render ($window: Window) {
 
 	function initComponent (vnode: Vnode, hooks: Hook[]): DocumentFragment | void {
 		let sentinel: any
-		if (typeof vnode.tag.view === "function") {
-			vnode.state = Object.create(vnode.tag)
+		if (typeof (vnode.tag as Component).view === "function") {
+			vnode.state = Object.create(vnode.tag as Component)
 			sentinel = vnode.state.view
 			if (sentinel.$$reentrantLock$$ != null) {
 				return $emptyFragment
@@ -188,9 +189,9 @@ export = function render ($window: Window) {
 				return $emptyFragment
 			}
 			sentinel.$$reentrantLock$$ = true
-			vnode.state = vnode.tag.prototype != null && typeof vnode.tag.prototype.view === "function"
-				? new vnode.tag(vnode)
-				: vnode.tag(vnode)
+			vnode.state = (vnode.tag as any).prototype != null && typeof (vnode.tag as any).prototype.view === "function"
+				? new (vnode.tag as any)(vnode)
+				: (vnode.tag as Function)(vnode)
 		}
 		if (vnode.attrs != null) {
 			initLifecycle(vnode.attrs, vnode, hooks)
@@ -937,7 +938,7 @@ export = function render ($window: Window) {
 	}
 
 	function isCustomElement (vnode: Vnode) {
-		return vnode.attrs!.is || vnode.tag.indexOf("-") > -1
+		return vnode.attrs!.is || (vnode.tag as string).indexOf("-") > -1
 	}
 
 	function hasIntegrationMethods (source: Record<string, any> | undefined) {
